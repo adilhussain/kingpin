@@ -19,9 +19,12 @@ passport.use(
       User.findOne({ googleId: profile.id })
         .then( (existingUser) => {
           if(existingUser){
+            console.log("User already present::", existingUser);
             // we already have a record with given profile Id
           } else {
-            new User({ googleId: profile.id }).save();
+            console.log("User not present:: Creating one");
+            x = new User({ googleId: profile.id, userName: profile.displayName, googleToken: accessToken }).save();
+            console.log("Mongo returns after creation:: ", x);
           }
         })
 	})
