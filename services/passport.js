@@ -4,6 +4,7 @@ const keys = require('../config/keys');
 const mongoose = require('mongoose');
 
 const User = mongoose.model('users');
+const uuidv1 = require('uuid/v1'); //based on timestamp
 
 passport.use(
 	new GoogleStrategy(
@@ -23,8 +24,12 @@ passport.use(
             // we already have a record with given profile Id
           } else {
             console.log("User not present:: Creating one");
-            x = new User({ googleId: profile.id, userName: profile.displayName, googleToken: accessToken }).save();
-            console.log("Mongo returns after creation:: ", x);
+            const uuid = uuidv1();
+            console.log("Generated UUID::", uuid);
+            new User({ googleId: profile.id, userName: profile.displayName, googleToken: accessToken, uuid: uuid}).save()
+              .then((x) => {
+                console.log("returned value:: ", x);
+              });
           }
         })
 	})
