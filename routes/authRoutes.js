@@ -12,9 +12,23 @@ module.exports = (router) => {
 
 	router.get(
 		'/auth/google/callback',
-	  passport.authenticate('google', function(req, res) {
-            console.log("Redirecting to:: ", keys.afterAuthenticationRedirect);
-	        res.redirect(keys.afterAuthenticationRedirect);
-	  }) 
+	  passport.authenticate('google', { successRedirect: '/',
+                                   failureRedirect: '/login' }) 
+   // passport.authenticate('google')
 	);
+
+	router.get(
+		'/api/current_user',
+		(req, res) => {
+			console.log("RR:: ", req.user);
+			res.send(req.user);
+		}
+	)
+
+	router.get('/api/logout',
+		(req, res) => {
+			req.logout();
+			res.send(req.user);
+		}
+	)
 }
