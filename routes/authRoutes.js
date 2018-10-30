@@ -1,4 +1,5 @@
 const passport = require('passport');
+const keys = require('../config/keys');
 
 module.exports = (router) => {
 
@@ -11,6 +12,9 @@ module.exports = (router) => {
 
 	router.get(
 		'/auth/google/callback',
-	  passport.authenticate('google') 
+	  passport.authenticate('google', function(req, res) {
+            console.log("Redirecting to:: ", keys.afterAuthenticationRedirect);
+	        res.redirect(keys.afterAuthenticationRedirect);
+	  }) 
 	);
 }
